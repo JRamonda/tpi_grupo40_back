@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IAlquilerRepository extends JpaRepository<Alquiler, Integer> {
 
+    Alquiler findById(int id);
 }

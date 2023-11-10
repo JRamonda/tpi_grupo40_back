@@ -1,11 +1,11 @@
 package com.frc.utn.grupo40.Alquileres.Controllers;
 
 import com.frc.utn.grupo40.Alquileres.Entities.Alquiler;
+import com.frc.utn.grupo40.Alquileres.Entities.DTOS.AlquilerDTO;
 import com.frc.utn.grupo40.Alquileres.Services.IAlquilerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +26,27 @@ public class AlquileresController {
     @GetMapping("/{ids}")
     public List<Alquiler> getAlquileresById(@PathVariable("ids") List<Integer> ids){
         return alquileresservice.FindAllById(ids);
+    }
+
+    @PostMapping("")
+
+    public ResponseEntity<Alquiler> terminarAlquiler(@RequestBody AlquilerDTO terminar)
+    {
+            Alquiler Alq = alquileresservice.terminarAlquiler(terminar);
+
+            if (Alq.getId() == 0 )
+            {
+                if (Alq.getIdCliente() == "no se pudo encontrar el alquiler")
+                {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Alq);
+                }
+
+                if (Alq.getIdCliente() == "la moneda ingresada no corresponde con las permitidas en el sistema ")
+                {
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Alq);
+                }
+            }
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(Alq);
     }
 }
