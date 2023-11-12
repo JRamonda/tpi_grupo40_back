@@ -1,87 +1,81 @@
 package com.frc.utn.grupo40.Alquileres.Services.apis;
 
-import org.json.JSONObject;
+
+import org.springframework.stereotype.Service;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+@Service
 public class ConversionMonedasImpl implements IconversionMonedas {
+    public void deStringAArray(String[] conversion, String respuesta) {
+        String[] parts = respuesta.split(",");
+        conversion[0] = parts[0].split(":")[1].replace("\"", "");
+        conversion[1] = parts[1].split(":")[1].replace("\"", "").replace("}", "");
+    }
     @Override
-    public String[] conversion(String aMoneda, double cantidad) {
-        String[] retornar = new String[2];
-
-        String apiUrl = "http://34.82.105.125:8080/convertir";
-        String requestData = String.format("{\"moneda_destino\":\"%s\",\"importe\":%f}", aMoneda, cantidad);
-
-
+    public String[] conversion(String moneda_destino, double importe) {
+        String[] conversion = new String[2];
+        String jsonResponse = "";
         try {
-            // Crear una URL
-            URL url = new URL(apiUrl);
+            // URL de la API que deseas consultar
+            String apiUrl = "http://34.82.105.125:8080/convertir";
 
-            // Abrir una conexión HttpURLConnection
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            // Datos que quieres enviar en el cuerpo de la solicitud
+            String requestBody = "{\"moneda_destino\":\""+ moneda_destino +"\",\"importe\":"+ Double.toString( importe) +"}";
 
-            // Configurar la solicitud
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-
-            // Enviar los datos de la solicitud
-            try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
-                wr.writeBytes(requestData);
-                wr.flush();
-            }
-
-            // Obtener la respuesta
-            int responseCode = connection.getResponseCode();
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Leer la respuesta
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                // Almacenar la respuesta en una variable
-                String respuestaApi = response.toString();
-
-                JSONObject jsonResponse = new JSONObject(respuestaApi);
-
-                // Obtener los valores deseados
-                String moneda = jsonResponse.getString("moneda");
-                double importeConvertido = jsonResponse.getDouble("importe");
-
-                retornar[0] = moneda;
-                retornar[1] = Double.toString(importeConvertido);
-
-
-            } else {
-                System.out.println("La solicitud no fue exitosa. Código de respuesta: " + responseCode);
-
-                retornar[0] = "error al realizar la conversión";
-                retornar[1] = Double.toString(0.0);
-            }
-
-            // Cerrar la conexión
-            connection.disconnect();
-
-        } catch (Exception e) {
+            // Realizar la solicitud POST con un cuerpo
+            jsonResponse = sendPostRequest(apiUrl, requestBody);
+        } catch (IOException e) {
             e.printStackTrace();
-            retornar[0] = "error al realizar la conexión con base de datos";
-            retornar[1] = Double.toString(0.0);
+        }
+        deStringAArray(conversion, jsonResponse);
+        return conversion;
+    }
+
+    private static String sendPostRequest(String apiUrl, String requestBody) throws IOException {
+        URL url = new URL(apiUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        // Configurar la solicitud
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true); // Permitir la escritura en el cuerpo de la solicitud
+
+        // Especificar el tipo de contenido del cuerpo (en este caso, JSON)
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        // Escribir los datos en el cuerpo de la solicitud
+        try (DataOutputStream wr = new DataOutputStream(connection.getOutputStream())) {
+            wr.writeBytes(requestBody);
+            wr.flush();
         }
 
+        // Obtener la respuesta
+        int responseCode = connection.getResponseCode();
 
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // Leer la respuesta
+            connection.getResponseMessage();
 
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
 
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
 
-        return retornar;
+            in.close();
+
+            return response.toString();
+        } else {
+            // Manejar el error, si es necesario
+            throw new IOException("Error en la solicitud. Código de respuesta: " + responseCode);
+        }
     }
 }
 
