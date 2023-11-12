@@ -19,4 +19,9 @@ public class EstacionesController {
     public List<Estacion> getEstaciones(){
         return estacionesservice.FindAll();
     }
+
+    @GetMapping("/estaciones/cercana")
+    public Estacion getEstacionCercana(double lat, double lon){
+        return estacionesservice.findClosest(lat, lon);
+    }
 }

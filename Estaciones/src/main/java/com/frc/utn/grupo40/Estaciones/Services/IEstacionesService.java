@@ -8,4 +8,6 @@ import java.util.List;
 public interface IEstacionesService {
 
     List<Estacion> FindAll();
+
+    Estacion findClosest(double lat, double lon);
 }
