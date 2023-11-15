@@ -7,8 +7,8 @@ import lombok.Data;
 public class AlquilerDTO {
 
     private int id;
-
     private String idCliente;
+
     private int estado;
 
     private String moneda;
