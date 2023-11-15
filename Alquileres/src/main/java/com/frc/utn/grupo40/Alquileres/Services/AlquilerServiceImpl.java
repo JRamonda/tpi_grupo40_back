@@ -2,11 +2,14 @@ package com.frc.utn.grupo40.Alquileres.Services;
 
 import com.frc.utn.grupo40.Alquileres.Entities.Alquiler;
 import com.frc.utn.grupo40.Alquileres.Entities.DTOS.AlquilerDTO;
+import com.frc.utn.grupo40.Alquileres.Entities.Estacion;
 import com.frc.utn.grupo40.Alquileres.Repositories.IAlquilerRepository;
+import com.frc.utn.grupo40.Alquileres.Repositories.IEstacionesRepository;
 import com.frc.utn.grupo40.Alquileres.Services.apis.IconversionMonedas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 @Service
@@ -17,6 +20,8 @@ public class AlquilerServiceImpl implements IAlquilerService {
     @Autowired
     private IconversionMonedas conversor;
 
+    @Autowired
+    private IEstacionesService servicioEstaciones;
     public List<Alquiler> FindAll() {
         return repository.findAll();
     }
@@ -71,7 +76,10 @@ public class AlquilerServiceImpl implements IAlquilerService {
             if (Double.parseDouble(conversion[1]) != 0) {
 
                     terminar.setEstado(2);
+                    Estacion estacion = servicioEstaciones.findById(alquiler.getIdEntidadEntrega());
+                    terminar.setEstacionDevolucion(estacion);
                     terminar.setMonto(Double.parseDouble(conversion[1]));
+                    terminar.setFechaHoraDevolucion(LocalDateTime.now().toString());
                     repository.save(terminar);
 
             }
@@ -84,9 +92,12 @@ public class AlquilerServiceImpl implements IAlquilerService {
         /// si la moneda es en pesos
         else {
 
-                terminar.setEstado(2);
-                repository.save(terminar);
-
+            terminar.setEstado(2);
+            Estacion estacion = servicioEstaciones.findById(alquiler.getIdEntidadEntrega());
+            terminar.setEstacionDevolucion(estacion);
+            terminar.setMonto(Double.parseDouble(conversion[1]));
+            terminar.setFechaHoraDevolucion(LocalDateTime.now().toString());
+            repository.save(terminar);
 
         }
 
