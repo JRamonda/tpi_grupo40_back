@@ -10,4 +10,6 @@ public interface IEstacionesService {
     List<Estacion> FindAll();
 
     Estacion findClosest(double lat, double lon);
+    // crear una nueva estacion:
+    Estacion create(Estacion estacion);
 }

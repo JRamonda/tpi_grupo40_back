@@ -43,4 +43,11 @@ public class EstacionesServicesImpl implements IEstacionesService {
         return closest;
     }
 
+    @Override
+    public Estacion create( Estacion estacion) {
+        System.out.println("Estacion en el servicio:");
+        System.out.println(estacion.toString());
+        return repository.save(estacion);
+    }
+
 }

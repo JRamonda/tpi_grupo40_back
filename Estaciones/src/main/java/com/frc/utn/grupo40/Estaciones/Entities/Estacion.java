@@ -1,5 +1,6 @@
 package com.frc.utn.grupo40.Estaciones.Entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ public class Estacion {
     private int id;
     private String nombre;
     @Column(name = "fecha_hora_creacion")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime fechaHoraCreacion;
     private double latitud;
     private double longitud;
