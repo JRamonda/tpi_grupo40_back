@@ -11,8 +11,6 @@ public class AlquilerDTO {
     private String idCliente;
     private int estado;
 
-    private double monto;
-
     private String moneda;
 
 }

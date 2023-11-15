@@ -31,7 +31,10 @@ public class ConversionMonedasImpl implements IconversionMonedas {
             // Realizar la solicitud POST con un cuerpo
             jsonResponse = sendPostRequest(apiUrl, requestBody);
         } catch (IOException e) {
-            e.printStackTrace();
+            String[] error = new String[2];
+            error[0] = "error";
+            error[1] = "0";
+            return error;
         }
         deStringAArray(conversion, jsonResponse);
         return conversion;

@@ -47,6 +47,7 @@ public class AlquileresController {
                 {
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Alq);
                 }
+
             }
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(Alq);

@@ -14,6 +14,7 @@ public class AlquilerServiceImpl implements IAlquilerService {
 
     @Autowired
     private IAlquilerRepository repository;
+    @Autowired
     private IconversionMonedas conversor;
 
     public List<Alquiler> FindAll() {
@@ -29,13 +30,15 @@ public class AlquilerServiceImpl implements IAlquilerService {
     @Override
     public Alquiler terminarAlquiler(AlquilerDTO alquiler) {
 
+
         // validar que exista un alquiler a terminar
 
         Alquiler terminar = repository.findById(alquiler.getId());
 
+        Alquiler error = new Alquiler();
+
         if (terminar == null)
         {
-            Alquiler error = new Alquiler();
             error.setId(0);
             error.setIdCliente("no se pudo encontrar el alquiler");
             return error;
@@ -43,20 +46,22 @@ public class AlquilerServiceImpl implements IAlquilerService {
 
 
 
-        String[] monedas = {"EUR", "CLP", "BRL", "COP", "PEN", "GBP"};
+        String[] monedas = {"EUR", "CLP", "BRL", "COP", "PEN", "GBP", "USD"};
         String[] conversion = new String[2];
+
+
 
 // si la moneda no es pesos
         if (alquiler.getMoneda() != null) {
-
             // si la moneda se puede convertir dentro de las permitidas
-            if (Arrays.stream(monedas).anyMatch(moneda -> alquiler.getMoneda() == moneda)) {
-                conversion = conversor.conversion(alquiler.getMoneda(), alquiler.getMonto());
+            if (Arrays.stream(monedas).anyMatch(moneda -> alquiler.getMoneda().equals( moneda))) {
+                conversion = conversor.conversion(alquiler.getMoneda(), terminar.getMonto());
+
             }
             // si la moneda no está dentro de las permitidas
             else
             {
-                Alquiler error = new Alquiler();
+
                 error.setId(0);
                 error.setIdCliente("la moneda ingresada no corresponde con las permitidas en el sistema ");
                 return error;
@@ -64,25 +69,27 @@ public class AlquilerServiceImpl implements IAlquilerService {
 
             // si el conversor pudo convertir bien a la moneda
             if (Double.parseDouble(conversion[1]) != 0) {
-                terminar.setEstado(2);
-                terminar.setMonto(Double.parseDouble(conversion[1]));
-                repository.save(terminar);
+
+                    terminar.setEstado(2);
+                    terminar.setMonto(Double.parseDouble(conversion[1]));
+                    repository.save(terminar);
 
             }
             // si el conversor tuvo un problema
             else {
-               Alquiler error = new Alquiler();
                 error.setIdCliente(conversion[0]);
+                error.setIdCliente("error con el conversor ");
             }
         }
         /// si la moneda es en pesos
-
         else {
-            terminar.setEstado(2);
-            terminar.setMonto(Double.parseDouble(conversion[1]));
-            repository.save(terminar);
+
+                terminar.setEstado(2);
+                repository.save(terminar);
+
 
         }
+
 
 
         return terminar;
