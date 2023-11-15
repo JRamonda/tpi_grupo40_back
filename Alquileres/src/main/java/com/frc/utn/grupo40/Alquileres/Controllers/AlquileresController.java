@@ -2,6 +2,7 @@ package com.frc.utn.grupo40.Alquileres.Controllers;
 
 import com.frc.utn.grupo40.Alquileres.Entities.Alquiler;
 import com.frc.utn.grupo40.Alquileres.Entities.DTOS.AlquilerDTO;
+import com.frc.utn.grupo40.Alquileres.Entities.DTOS.CrearAlquilerDTO;
 import com.frc.utn.grupo40.Alquileres.Services.IAlquilerService;
 import com.frc.utn.grupo40.Alquileres.Services.apis.IconversionMonedas;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,7 @@ public class AlquileresController {
         return alquileresservice.FindAllById(ids);
     }
 
-    @PostMapping("")
-
+    @PostMapping("/terminarAlquiler")
     public ResponseEntity<Alquiler> terminarAlquiler(@RequestBody AlquilerDTO terminar)
     {
             Alquiler Alq = alquileresservice.terminarAlquiler(terminar);
@@ -53,4 +53,12 @@ public class AlquileresController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(Alq);
     }
 
+
+    @PostMapping("/nuevo")
+    public ResponseEntity<Alquiler> crearAlquiler(@RequestBody CrearAlquilerDTO nuevo)
+    {
+        Alquiler aCrear = alquileresservice.crear(nuevo);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(aCrear);
+    }
 }

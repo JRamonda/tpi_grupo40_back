@@ -2,7 +2,9 @@ package com.frc.utn.grupo40.Alquileres.Services;
 
 import com.frc.utn.grupo40.Alquileres.Entities.Alquiler;
 import com.frc.utn.grupo40.Alquileres.Entities.DTOS.AlquilerDTO;
+import com.frc.utn.grupo40.Alquileres.Entities.DTOS.CrearAlquilerDTO;
 import com.frc.utn.grupo40.Alquileres.Entities.Estacion;
+import com.frc.utn.grupo40.Alquileres.Entities.Tarifas;
 import com.frc.utn.grupo40.Alquileres.Repositories.IAlquilerRepository;
 import com.frc.utn.grupo40.Alquileres.Repositories.IEstacionesRepository;
 import com.frc.utn.grupo40.Alquileres.Services.apis.IconversionMonedas;
@@ -22,6 +24,11 @@ public class AlquilerServiceImpl implements IAlquilerService {
 
     @Autowired
     private IEstacionesService servicioEstaciones;
+
+    @Autowired
+    private ITarifasService servicioTarifas ;
+
+
     public List<Alquiler> FindAll() {
         return repository.findAll();
     }
@@ -105,4 +112,30 @@ public class AlquilerServiceImpl implements IAlquilerService {
 
         return terminar;
     }
+
+    @Override
+    public Alquiler crear(CrearAlquilerDTO crear) {
+        Alquiler nuevo = new Alquiler();
+        nuevo.setIdCliente(crear.getIdCliente());
+
+        Estacion estacion = servicioEstaciones.findById(crear.getIdEstacionRetiro());
+        nuevo.setEstacionRetiro(estacion);
+
+        nuevo.setFechaHoraRetiro(LocalDateTime.now().toString());
+
+        Tarifas tarifas = servicioTarifas.findById(crear.getTarifa());
+
+        nuevo.setIdTarifa(tarifas);
+        //try catch
+
+        Alquiler creado = repository.save(nuevo);
+
+        return creado;
+    }
+
+
+
+
+
+
 }
