@@ -64,7 +64,7 @@ public class AlquilerServiceImpl implements IAlquilerService {
 
         Alquiler terminar = repository.findById(alquiler.getId());
 
-        if (terminar == null)
+        if (terminar == null || !terminar.getIdCliente().equals(alquiler.getIdCliente()) )
         {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Proporcione Id valido para alquiler");
         }

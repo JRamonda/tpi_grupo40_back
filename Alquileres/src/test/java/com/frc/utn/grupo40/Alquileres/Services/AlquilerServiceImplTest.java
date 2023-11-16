@@ -30,7 +30,7 @@ class AlquilerServiceImplTest {
         // finalizar alquiler
 
         int id = alquilerService.maxId();
-        AlquilerDTO terminarDto = new AlquilerDTO(id,"34",1,null, 5);
+        AlquilerDTO terminarDto = new AlquilerDTO(id,"34",null, 5);
 
 
         Alquiler alquiler =alquilerService.terminarAlquiler(terminarDto);
