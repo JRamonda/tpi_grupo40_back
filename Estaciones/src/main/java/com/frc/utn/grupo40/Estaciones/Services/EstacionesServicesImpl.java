@@ -3,7 +3,9 @@ package com.frc.utn.grupo40.Estaciones.Services;
 import com.frc.utn.grupo40.Estaciones.Entities.Estacion;
 import com.frc.utn.grupo40.Estaciones.Repositories.IEstacionesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 @Service
@@ -43,8 +45,20 @@ public class EstacionesServicesImpl implements IEstacionesService {
         return closest;
     }
 
+
     @Override
     public Estacion create( Estacion estacion) {
+        if(estacion.getNombre() == null || estacion.getNombre().length() > 250 || estacion.getNombre().isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de la estación no puede ser vacio o superar los 250 caracteres");
+        }
+
+        if (estacion.getLatitud() < -90 || estacion.getLatitud() > 90) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La latitud de la estación no puede estar fuera del rango válido [-90, 90] ");
+        }
+
+        if (estacion.getLongitud() < -180 || estacion.getLongitud() > 180) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La longitud de la estación no puede estar fuera del rango válido [-180, 180] ");
+        }
         System.out.println("Estacion en el servicio:");
         System.out.println(estacion.toString());
         return repository.save(estacion);

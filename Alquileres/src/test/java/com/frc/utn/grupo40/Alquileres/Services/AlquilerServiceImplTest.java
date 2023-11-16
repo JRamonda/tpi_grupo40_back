@@ -39,12 +39,19 @@ class AlquilerServiceImplTest {
 
     }
 
-    @Test
-    void terminar() {
-        
-    }
+
 
     @Test
     void crear() {
+        ///alquiler creado
+        CrearAlquilerDTO crearDto = new CrearAlquilerDTO("34",1);
+
+       Alquiler creado = alquilerService.crear(crearDto);
+
+       Alquiler buscadoBd= alquilerService.FindById(creado.getId());
+
+       assertEquals(creado.getIdCliente(),buscadoBd.getIdCliente());
+       assertEquals(creado.getId(),buscadoBd.getId());
+
     }
 }

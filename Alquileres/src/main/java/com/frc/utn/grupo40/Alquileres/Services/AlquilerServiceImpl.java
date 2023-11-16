@@ -45,6 +45,12 @@ public class AlquilerServiceImpl implements IAlquilerService {
         return repository.findAllById(ids);
     }
 
+    public Alquiler FindById(int id)
+    {
+        return repository.findById(id) ;
+    };
+
+
     @Override
     public Alquiler terminarAlquiler(AlquilerDTO alquiler) {
 
@@ -115,7 +121,7 @@ public class AlquilerServiceImpl implements IAlquilerService {
         return terminar;
     }
 
-    public void terminar(Alquiler finalizar, Tarifa tarifa, Double monto ) {
+    private void terminar(Alquiler finalizar, Tarifa tarifa, Double monto ) {
         finalizar.setEstado(2);
         finalizar.setIdTarifa(tarifa);
         finalizar.setMonto(monto);
