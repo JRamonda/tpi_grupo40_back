@@ -58,7 +58,7 @@ public class GWConfig {
                         .pathMatchers( HttpMethod.POST, "/alquileres/terminarAlquiler")
                         .hasRole("CLIENTE")
                         .pathMatchers( HttpMethod.GET, "/alquileres/{ids}")
-                        .hasRole("Cliente")
+                        .hasRole("ADMINISTRADOR")
                                 // Cualquier otra petición...
                                 .anyExchange()
                                 .authenticated()
