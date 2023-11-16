@@ -8,4 +8,9 @@ import org.springframework.stereotype.Repository;
 public interface ITarifasRepository extends JpaRepository<Tarifas, Integer > {
 
     Tarifas findById(int id);
+
+    Tarifas findByDefinicionAndDiaMesAndMesAndAnio(char definicion, int diaMes, int mes, int anio);
+
+    Tarifas findByDiaSemana(int diaSemana);
+
 }

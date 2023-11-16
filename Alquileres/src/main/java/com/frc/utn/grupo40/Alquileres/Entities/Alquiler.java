@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "Alquileres")
 @NoArgsConstructor
 @Data
@@ -27,9 +29,9 @@ public class Alquiler {
     @JoinColumn (name = "estacion_devolucion")
     private Estacion estacionDevolucion;
     @Column(name = "fecha_hora_retiro")
-    private String fechaHoraRetiro;
+    private LocalDateTime fechaHoraRetiro;
     @Column(name = "fecha_hora_devolucion")
-    private String fechaHoraDevolucion;
+    private LocalDateTime fechaHoraDevolucion;
     private double monto;
 
     @JoinColumn(name = "id_tarifa")

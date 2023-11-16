@@ -13,5 +13,5 @@ public class AlquilerDTO {
 
     private String moneda;
 
-    private int idEntidadEntrega;
+    private int idPuntoEntrega;
 }

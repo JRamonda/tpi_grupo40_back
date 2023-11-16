@@ -15,4 +15,15 @@ public class ITarifasServiceImpl implements ITarifasService{
         Tarifas tarifa = repositoryTarifa.findById(id);
         return  tarifa;
     }
+
+    @Override public Tarifas BuscarTarifaFecha(char definicion, int diaMes, int mes, int anio) {
+        return repositoryTarifa.findByDefinicionAndDiaMesAndMesAndAnio(definicion, diaMes, mes, anio);
+    }
+
+    @Override public Tarifas BuscarTarifaDiaSemana(int diaSemana) {
+        return repositoryTarifa.findByDiaSemana(diaSemana);
+    }
+
+
+
 }

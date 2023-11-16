@@ -11,7 +11,5 @@ public class CrearAlquilerDTO {
 
     private String idCliente;
     private int idEstacionRetiro;
-
-    private int tarifa;
-
+    
 }
