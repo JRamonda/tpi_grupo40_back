@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @ToString
+@Table
 public class Alquiler {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,6 @@ public class Alquiler {
 
     @JoinColumn(name = "id_tarifa")
 @ManyToOne
-    private Tarifas idTarifa;
+    private Tarifa idTarifa;
 
 }

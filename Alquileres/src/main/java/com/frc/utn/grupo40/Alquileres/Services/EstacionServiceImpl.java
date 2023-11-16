@@ -4,12 +4,14 @@ import com.frc.utn.grupo40.Alquileres.Entities.Estacion;
 import com.frc.utn.grupo40.Alquileres.Repositories.IEstacionesRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class IEstacioneServiceImpl implements IEstacionesService{
+public class EstacionServiceImpl implements IEstacionService {
 
     private IEstacionesRepository repository;
 
-    public IEstacioneServiceImpl(IEstacionesRepository repository) {
+    public EstacionServiceImpl(IEstacionesRepository repository) {
         this.repository = repository;
     }
 
@@ -18,4 +20,12 @@ public class IEstacioneServiceImpl implements IEstacionesService{
         Estacion estacion = repository.findById(id);
         return  estacion;
     }
+
+    @Override
+    public List<Estacion> getAll() {
+        List<Estacion> estaciones = repository.findAll();
+        return estaciones;
+    }
+
+
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class CrearAlquilerDTO {
 
     private String idCliente;
-    private int idEstacionRetiro;
+
+    private Integer idEstacionRetiro;
     
 }

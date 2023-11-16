@@ -1,13 +1,14 @@
 package com.frc.utn.grupo40.Alquileres.Services;
 
-import com.frc.utn.grupo40.Alquileres.Entities.Tarifas;
+import com.frc.utn.grupo40.Alquileres.Entities.Tarifa;
+
 
 public interface ITarifasService {
 
-    Tarifas findById(int id);
+    Tarifa findById(int id);
 
-    Tarifas BuscarTarifaFecha(char definicion, int diaMes, int mes, int anio);
+    Tarifa BuscarTarifaFecha(char definicion, int diaMes, int mes, int anio);
 
-    Tarifas BuscarTarifaDiaSemana(int diaSemana);
+    Tarifa BuscarTarifaDiaSemana(int diaSemana);
 
 }

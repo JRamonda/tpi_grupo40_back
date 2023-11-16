@@ -8,6 +8,7 @@ import com.frc.utn.grupo40.Alquileres.Services.apis.IconversionMonedas;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -36,19 +37,10 @@ public class AlquileresController {
     {
             Alquiler Alq = alquileresservice.terminarAlquiler(terminar);
 
-            if (Alq.getId() == 0 )
-            {
-                if (Alq.getIdCliente() == "no se pudo encontrar el alquiler")
-                {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Alq);
-                }
+        if(terminar.getIdPuntoEntrega() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proporcione una Estacion");
+        }
 
-                if (Alq.getIdCliente() == "la moneda ingresada no corresponde con las permitidas en el sistema ")
-                {
-                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Alq);
-                }
-
-            }
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(Alq);
     }

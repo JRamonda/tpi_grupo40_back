@@ -16,4 +16,6 @@ public interface IAlquilerService {
     Alquiler terminarAlquiler(AlquilerDTO alquiler);
 
     Alquiler crear(CrearAlquilerDTO crear);
+
+    int maxId();
 }
